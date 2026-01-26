@@ -1,24 +1,47 @@
 {% extends "base.html" %}
 
+{% block title %}
+    <h1 class="mt-2">Sign In</h1>
+    <hr>
+{% endblock %}
+
 {% block content %}
-    <h1>Sign In</h1>
+    
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
+        <div class="row mt-2">
+            <div class="col-5">
+                <p>
+                    {{ form.username.label(class="form-label fs-5") }}<br>
+                    {{ form.username(class="form-control") }}
+                    {% for error in form.username.errors %}
+                        <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-5"></div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-5">
+                <p>
+                    {{ form.password.label(class="form-label fs-5") }}<br>
+                    {{ form.password(class="form-control") }}
+                    {% for error in form.password.errors %}
+                        <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-5"></div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-5">
+                <div class="container-fluid mt-3 mb-2">
+                    {{ form.remember_me(class="form-check-input") }} {{ form.remember_me.label(class="form-label") }}
+                </div>
+                
+                {{ form.submit(class="btn btn-success m2-3") }}
+            </div>
+        </div>
     </form>
 {% endblock %}

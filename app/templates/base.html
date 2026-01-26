@@ -28,15 +28,21 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    {% if current_user.is_anonymous %}
-                        <a class="nav-link" href="{{ url_for('login') }}">Sign In</a>
-                    {% else %}
-                        <a class="nav-link" href="{{ url_for('logout') }}">Sign Out</a>
-                    {% endif %}
-                    <a class="nav-link" href="https://github.com/Tsunderarislime/artist-index">GitHub</a>
-                    <a class="nav-link" href="{{ url_for('about') }}">About</a>
-                </div>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        {% if not current_user.is_anonymous %}
+                            <a class="nav-link" href="{{ url_for('add') }}">Add Artist</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                </ul>
+                {% if current_user.is_anonymous %}
+                    <a class="nav-link" href="{{ url_for('login') }}"><button type="button" class="btn btn-light btn-lg">Sign In</button></a>
+                {% else %}
+                    <a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-light btn-lg">Sign Out</button></a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -48,11 +54,12 @@
 
     <!-- MAIN CONTENT -->
 
-    <div class="container mt-3 mb-3 bg-white bg-opacity-75 border border-light-subtle rounded">
-        {% with messages = get_flashed_messages() %}
+    <div class="container p-3 mt-3 mb-3 bg-white bg-opacity-75 border border-light-subtle rounded">
+        {% block title %}{% endblock %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-info mt-1" role="alert">{{ message }}</div>
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mt-1" role="alert">{{ message }}</div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
@@ -62,7 +69,48 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
-        </script>
+    </script>
+    
+    <script>
+        // These functions used in "add.html"
+        function addLink() {
+            const firstLink = document.querySelector('.link-field');
+            const newLink = document.createElement('div');
+            newLink.classList.add('link-field');
+            newLink.innerHTML = firstLink.innerHTML;
+
+            const newIndex = document.querySelectorAll('.link-field').length;
+
+            const social_media = newLink.querySelector('#social_media_links-0-social_media');
+            social_media.id = `social_media_links-${newIndex}-social_media`;
+            social_media.name = social_media.id;
+            social_media.value = '';
+
+            const link = newLink.querySelector('#social_media_links-0-link');
+            link.id = `social_media_links-${newIndex}-link`;
+            link.name = link.id;
+            link.value = '';
+
+            const button = newLink.querySelector('.delete-link-button');
+            button.classList.remove('d-none');
+
+            document.getElementById('link-fields').appendChild(newLink);
+            document.querySelector('.link-field:last-child input').focus();
+            return false;
+        }
+
+        function removeLink(e) {
+            e.parentElement.parentElement.parentElement.remove();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstLink = document.querySelector('.link-field');
+            const firstButton = firstLink.querySelector('.delete-link-button');
+
+            firstButton.classList.add('d-none');
+        }, false);
+
+    </script>
 </body>
 
 </html>

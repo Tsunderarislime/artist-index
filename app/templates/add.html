@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">Add Artist</h1>
+    <hr>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" novalidate>
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+
+        <div class="container-fluid" id="link-fields">
+            <div class="row">
+                <div class="col-4 mb-2">
+                    {{ form.name.label(class="form-label fs-5") }}<br>
+                    {{ form.name(class="form-control") }}
+                    {% for error in form.name.errors %}
+                        <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                    {% endfor %}
+                    <br>
+                    {{ form.searchable_name.label(class="form-label mt-3 fs-5") }}<br>
+                    {{ form.searchable_name(class="form-control mb-3") }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-4">
+                    <p class="form-label fs-5">Social Media</p><br>
+                </div>
+                <div class="col-6">
+                    <p class="form-label fs-5">Link</p><br>
+                </div>
+                <div class="col-1">
+                    <br>
+                </div>
+            </div>
+            {% for sm_link in form.social_media_links.entries %}
+                <div class="link-field">
+                    <div class="row">
+                        <div class="col-4 mb-2">
+                            {{ sm_link.social_media(class="form-control") }}
+                        </div>
+                        <div class="col-6">
+                            {{ sm_link.link(class="form-control") }}
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-danger fw-bold delete-link-button" onclick="javascript:return removeLink(this)">-</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row form-group">
+            <div class="col-5"></div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary mt-2 mb-2" onclick="javascript:return addLink()">+</button>
+            </div>
+            <div class="col-5"></div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-4">
+                <div class="container-fluid mt-3 mb-2">
+                    {{ form.public(class="form-check-input") }} {{ form.public.label(class="form-label") }}
+                </div>
+                
+                {{ form.submit(class="btn btn-success m2-3") }}
+            </div>
+        </div>
+    </form>
+{% endblock %}

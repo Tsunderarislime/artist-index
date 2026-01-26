@@ -3,8 +3,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from urllib.parse import urlsplit
 import sqlalchemy as sa
 from app import app, db
-from app.models import User
-from app.forms import LoginForm
+from app.models import User, Artist
+from app.forms import LoginForm, ArtistForm
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -22,7 +22,7 @@ def login():
         user = db.session.scalar(
             sa.select(User).where(User.username == form.username.data))
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'danger')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -37,7 +37,32 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/about', methods=['GET', 'POST'])
-@login_required #TODO: Remove this once the administrator panel has been made for real
+@app.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
+    form = ArtistForm()
+    if form.validate_on_submit():
+        links = {}
+        successes = 0
+        for link in form.social_media_links.data:
+            if link['social_media'].strip() and link['link'].strip():
+                links[link['social_media'].strip()] = link['link'].strip()
+                successes += 1
+            else:
+                flash(f"Failed to add social media link: \"{link['social_media']}\" ({link['link']}).", 'warning')
+
+        if successes > 0:
+            flash(f"Successfully added {form.name.data} ({form.searchable_name.data}) to the database.", 'success')
+            artist = Artist(name=form.name.data.strip(), searchable_name=form.searchable_name.data.strip(), public=form.public.data, social_media_links=links)
+            db.session.add(artist)
+            db.session.commit()
+        else:
+            flash(f"Failed to add {form.name.data} ({form.searchable_name.data}) to the database.", 'danger')
+
+        return redirect(url_for('add'))
+    
+    return render_template('add.html', title='Add Artist', form=form)
+
+@app.route('/about')
 def about():
     return render_template('about.html', title='About')
