@@ -16,3 +16,29 @@ body {
     position: absolute;
     z-index: -1;
 }
+
+#main-container {
+    min-height: 100%;
+}
+
+#content {
+    backdrop-filter: blur(5px);
+}
+
+#index-container {
+    max-height: 80vh;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.outer-hoverlay:hover {
+    box-shadow: inset 0 0 15px rgba(210, 255, 255, 0.75);
+    cursor: pointer;
+}
+
+.dy-layout-table {
+    border-radius: 5px;
+}
+
+.dt-input {
+    margin: 5px;
+}

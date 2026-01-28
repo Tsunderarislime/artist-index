@@ -7,8 +7,15 @@
     <title>{{ title }}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" 
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.3.6/js/dataTables.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Liter&display=swap" rel="stylesheet">
@@ -17,7 +24,7 @@
 <body>
     <!-- NAVBAR -->
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary p-2" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='logo.webp') }}" width="36" height="36">
@@ -27,90 +34,55 @@
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="collapse navbar-collapse text-center" id="navbarNavAltMarkup">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        {% if not current_user.is_anonymous %}
-                            <a class="nav-link" href="{{ url_for('add') }}">Add Artist</a>
-                        {% endif %}
+                        <a class="nav-link btn btn-dark" href="{{ url_for('add') }}">Add Artist</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                        <a class="nav-link btn btn-dark" href="{{ url_for('about') }}">About</a>
                     </li>
                 </ul>
-                {% if current_user.is_anonymous %}
-                    <a class="nav-link" href="{{ url_for('login') }}"><button type="button" class="btn btn-light btn-lg">Sign In</button></a>
-                {% else %}
-                    <a class="nav-link" href="{{ url_for('logout') }}"><button type="button" class="btn btn-light btn-lg">Sign Out</button></a>
-                {% endif %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        {% if current_user.is_anonymous %}
+                            <a class="nav-link btn btn-primary" href="{{ url_for('login') }}">Sign In</a>
+                        {% else %}
+                            <a class="nav-link btn btn-danger" href="{{ url_for('logout') }}">Sign Out</a>
+                        {% endif %}
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- BACKGROUND IMAGES -->
-
     <img src="{{ url_for('static', filename='cherry.gif') }}" class="background-image" style="top: 5%; right: -1%;">
     <img src="{{ url_for('static', filename='tapioca.gif') }}" class="background-image" style="bottom: 0%; left: -1%;">
 
     <!-- MAIN CONTENT -->
+    <div class="container-fluid" id="main-container">
+        <div class="container p-4 mt-2 mb-3 bg-white bg-opacity-25 border border-3 border-light-subtle rounded-4 shadow-lg" id="content">
+            {% block title %}{% endblock %}
+            <hr>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-1" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-    <div class="container p-3 mt-3 mb-3 bg-white bg-opacity-75 border border-light-subtle rounded">
-        {% block title %}{% endblock %}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-1" role="alert">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
     </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
     
-    <script>
-        // These functions used in "add.html"
-        function addLink() {
-            const firstLink = document.querySelector('.link-field');
-            const newLink = document.createElement('div');
-            newLink.classList.add('link-field');
-            newLink.innerHTML = firstLink.innerHTML;
-
-            const newIndex = document.querySelectorAll('.link-field').length;
-
-            const social_media = newLink.querySelector('#social_media_links-0-social_media');
-            social_media.id = `social_media_links-${newIndex}-social_media`;
-            social_media.name = social_media.id;
-            social_media.value = '';
-
-            const link = newLink.querySelector('#social_media_links-0-link');
-            link.id = `social_media_links-${newIndex}-link`;
-            link.name = link.id;
-            link.value = '';
-
-            const button = newLink.querySelector('.delete-link-button');
-            button.classList.remove('d-none');
-
-            document.getElementById('link-fields').appendChild(newLink);
-            document.querySelector('.link-field:last-child input').focus();
-            return false;
-        }
-
-        function removeLink(e) {
-            e.parentElement.parentElement.parentElement.remove();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstLink = document.querySelector('.link-field');
-            const firstButton = firstLink.querySelector('.delete-link-button');
-
-            firstButton.classList.add('d-none');
-        }, false);
-
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>

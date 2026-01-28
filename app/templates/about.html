@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}
+    <h1 class="mt-2">About the Artist Index</h1>
+{% endblock %}
+
 {% block content %}
-    <h1>About the Artist Index</h1>
-    <p>I'll finish this later, just putting this here so I remember to write about this website.</p>
-    <a class="fs-3" href="https://github.com/Tsunderarislime/artist-index">GitHub Repository</a>
+    <div class="container-fluid">
+        <p>I'll finish this later, just putting this here so I remember to write about this website.</p>
+        <a class="fs-3" href="https://github.com/Tsunderarislime/artist-index">GitHub Repository</a>
+        <hr>
+        <a class="btn btn-secondary" id="content-toggle" href="#">Hide Content</a>
+    </div>
 {% endblock %}

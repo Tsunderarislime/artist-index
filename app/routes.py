@@ -9,7 +9,16 @@ from app.forms import LoginForm, ArtistForm
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', title='Home')
+    if current_user.is_authenticated:
+        artists = db.session.scalars(
+            sa.select(Artist)
+        ).all()
+        return render_template('index.html', title='Home', artists=artists)
+    else:
+        artists = db.session.scalars(
+            sa.select(Artist).where(Artist.public == True)
+        ).all()
+        return render_template('index.html', title='Home', artists=artists)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
