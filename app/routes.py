@@ -1,10 +1,14 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from urllib.parse import urlsplit
 import sqlalchemy as sa
 from app import app, db
 from app.models import User, Artist
-from app.forms import LoginForm, ArtistForm
+from app.forms import LoginForm, ArtistForm, DeleteForm
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory('static', 'robots.txt')
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -50,6 +54,7 @@ def logout():
 @login_required
 def add():
     form = ArtistForm()
+
     if form.validate_on_submit():
         links = {}
         successes = 0
@@ -71,6 +76,30 @@ def add():
         return redirect(url_for('add'))
     
     return render_template('add.html', title='Add Artist', form=form)
+
+@app.route('/artist/<name>', methods=['GET', 'POST'])
+def artist(name):
+    artist = db.first_or_404(sa.select(Artist).where(Artist.name == name))
+    form = DeleteForm()
+
+    if form.validate_on_submit():
+        success = True
+
+        if form.name.data.strip() != name:
+            form.name.errors.append("The names did not match, please try again.")
+            success = False
+        
+        if not form.double_check.data:
+            form.double_check.errors.append("Please check the box to confirm.")
+            success = False
+        
+        if success:
+            flash(f'Successfully deleted {name} from the database.', 'success')
+            return redirect(url_for('index'))
+        else:
+            return render_template('artist.html', artist=artist, form=form, hide_modal='ThisEvaluatesToTrueInJavaScript')
+
+    return render_template('artist.html', artist=artist, form=form, hide_modal='')
 
 @app.route('/about')
 def about():

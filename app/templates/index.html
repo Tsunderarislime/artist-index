@@ -8,7 +8,7 @@
     <div class="container-fluid">
         {% if current_user.is_anonymous %}
             <p>Welcome to the Artist Index! Below is a list of artists that I follow on various socials.
-                Click on a row to display the links to that artist.
+                Click on a row to display the links to that artist. Click on their name for a more detailed view.
             </p>
         {% else %} 
             <p>Welcome back, {{ current_user.username }}!</p>
@@ -26,7 +26,10 @@
             <tbody>
                 {% for artist in artists %}
                     <tr>
-                        <th scope="row" class="dt-control outer-hoverlay"><a href="#" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ artist.name }}</a></th>
+                        <th scope="row" class="dt-control outer-hoverlay">
+                            <a href="{{ url_for('artist', name=artist.name) }}" 
+                                class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover do-not-scroll">{{ artist.name }}</a>
+                        </th>
                         <td>{{ artist.searchable_name }}</td>
                         <td>{{ json_dumps(artist.social_media_links) }}</td>
                     </tr>

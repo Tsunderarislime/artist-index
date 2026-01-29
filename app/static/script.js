@@ -10,15 +10,13 @@ function formatData(d) {
         '<table class="table table-striped table-bordered table-hover">'
     let links = ''
     let dict = JSON.parse(d[2]);
-    console.log(dict)
+
     for (const [key, value] of Object.entries(dict)) {
         links += '<tr>' +
             '<th scope="row" style="width: 20%;">' + key + '</th>' +
-            '<td style="width: auto%;"><a href="' + value + '">' + value + '</a></td>' +
+            '<td style="width: auto;"><a href="' + value + '">' + value + '</a></td>' +
             '</tr>'
     };
-
-    console.log(links);
 
     return header + links +
         '</table>' +
@@ -26,6 +24,7 @@ function formatData(d) {
 }
 
 let table = new DataTable('#the-index', {
+    // 0 = name, 1 = searchable_name, 2 = social_media_links
     order: [[0, 'asc']],
     columnDefs: [
         {
@@ -41,15 +40,18 @@ table.on('click', 'tbody th.dt-control', function (e) {
     let tr = e.target.closest('tr');
     let row = table.row(tr);
 
-    if ( row.child.isShown() ) {
-        $('div.slider', row.child()).slideUp(250, function () {
-            row.child.hide();
-        });
-    }
-    else {
-        row.child(formatData(row.data()), 'no-padding' ).show();
-        $('div.slider', row.child()).slideDown(250);
-    }
+    // 'do-not-scroll' class prevents table from sliding when clicking the link as an admin.
+    if (!(e.target.classList.contains('do-not-scroll'))) {
+        if ( row.child.isShown() ) {
+            $('div.slider', row.child()).slideUp(250, function () {
+                row.child.hide();
+            });
+        }
+        else {
+            row.child(formatData(row.data()), 'no-padding' ).show();
+            $('div.slider', row.child()).slideDown(250);
+        };
+    };
 });
 
 
@@ -85,8 +87,24 @@ function removeLink(e) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const firstLink = document.querySelector('.link-field');
-    const firstButton = firstLink.querySelector('.delete-link-button');
+    try {
+        const firstLink = document.querySelector('.link-field');
+        const firstButton = firstLink.querySelector('.delete-link-button');
 
-    firstButton.classList.add('d-none');
+        firstButton.classList.add('d-none');
+    } catch(error) {
+        // This error happens when not viewing the artist adding page, fine to ignore
+    };
 }, false);
+
+// The script here is used in artist.html
+window.onload = () => {
+    try {
+        const deleteModal = new bootstrap.Modal('#delete-modal');
+        if (document.getElementById('delete-modal').getAttribute('title')) {
+            deleteModal.show();
+        };
+    } catch(error) {
+        // This error happens when not viewing the artist details page, fine to ignore
+    };
+}

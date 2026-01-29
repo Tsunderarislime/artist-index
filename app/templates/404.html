@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">This Page does not Exist</h1>
+{% endblock %}
+
+{% block content %}
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Back to Index</a>
+{% endblock %}

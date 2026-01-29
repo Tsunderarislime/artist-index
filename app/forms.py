@@ -32,3 +32,11 @@ class ArtistForm(FlaskForm):
 
         if artist is not None:
             raise ValidationError('Artist already exists in database.')
+
+class DeleteForm(FlaskForm):
+    class Meta:
+        csrf = False
+    
+    name = StringField('Name')
+    double_check = BooleanField('Double Check')
+    submit = SubmitField('Delete')
