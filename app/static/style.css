@@ -44,3 +44,9 @@ body {
 .dt-input {
     margin: 5px;
 }
+
+/* artist.html styling */
+#timeline-container {
+    max-width: 600px;
+    max-height: 50vh;
+}
