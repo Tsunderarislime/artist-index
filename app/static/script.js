@@ -1,9 +1,3 @@
-// The script here is used in "base.html"
-let content = document.getElementById('content');
-$('#content-toggle').click( function(){
-    $(content).fadeOut(1000);
-});
-
 // The script here is used in "index.html" 
 function formatData(d) {
     let header = '<div class="slider" style="display: none;">' +
@@ -97,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 }, false);
 
-// The script here is used in artist.html
+// The script here is used in "artist.html"
 window.onload = () => {
     try {
         const deleteModal = new bootstrap.Modal('#delete-modal');
@@ -108,3 +102,9 @@ window.onload = () => {
         // This error happens when not viewing the artist details page, fine to ignore
     };
 }
+
+// The script here is used in "about.html"
+let content = document.getElementById('content');
+$('#content-toggle').click( function(){
+    $(content).fadeOut(1000);
+});

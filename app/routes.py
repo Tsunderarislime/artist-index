@@ -82,7 +82,7 @@ def artist(name):
     artist = db.first_or_404(sa.select(Artist).where(Artist.name == name))
     form = DeleteForm()
 
-    if form.validate_on_submit():
+    if current_user.is_authenticated and form.validate_on_submit():
         success = True
 
         if form.name.data.strip() != name:

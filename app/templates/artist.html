@@ -46,37 +46,39 @@
 {% endblock %}
 
 {% block modal %}
-<div class="modal fade" id="delete-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="delete-modal-label" aria-hidden="true" title="{{ hide_modal }}">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-4" id="delete-modal-label">Delete artist?</h1>
+{% if not current_user.is_anonymous %}
+    <div class="modal fade" id="delete-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="delete-modal-label" aria-hidden="true" title="{{ hide_modal }}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-4" id="delete-modal-label">Delete artist?</h1>
+                </div>
+                <form action="" method="post" novalidate>
+                    {{ form.csrf_token }}
+                    {{ form.hidden_tag() }}
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <p class="form-label">Type {{ artist.name }} to confirm:</p>
+                            {{ form.name(class="form-control") }}
+                            {% for error in form.name.errors %}
+                                <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-2">
+                            <p class="form-label">Check this box to confirm this action:</p>
+                            {{ form.double_check(class="form-check-input") }}
+                            {% for error in form.double_check.errors %}
+                                <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                        {{ form.submit(class="btn btn-danger") }}
+                    </div>
+                </form>
             </div>
-            <form action="" method="post" novalidate>
-                {{ form.csrf_token }}
-                {{ form.hidden_tag() }}
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <p class="form-label">Type {{ artist.name }} to confirm:</p>
-                        {{ form.name(class="form-control") }}
-                        {% for error in form.name.errors %}
-                            <div class="alert alert-danger mt-1">[{{ error }}]</div>
-                        {% endfor %}
-                    </div>
-                    <div class="mb-2">
-                        <p class="form-label">Check this box to confirm this action:</p>
-                        {{ form.double_check(class="form-check-input") }}
-                        {% for error in form.double_check.errors %}
-                            <div class="alert alert-danger mt-1">[{{ error }}]</div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
-                    {{ form.submit(class="btn btn-danger") }}
-                </div>
-            </form>
         </div>
     </div>
-</div>
+{% endif %}
 {% endblock %}
