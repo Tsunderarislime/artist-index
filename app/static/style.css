@@ -26,7 +26,7 @@ body {
     backdrop-filter: blur(5px);
 }
 
-/* index.html styling */
+/* "index.html" styling */
 #index-container {
     max-height: 80vh;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
@@ -45,8 +45,8 @@ body {
     margin: 5px;
 }
 
-/* artist.html styling */
-#timeline-container {
+/* "artist.html" styling */
+.twitter-container {
     max-width: 600px;
-    max-height: 50vh;
+    height: 50vh;
 }
