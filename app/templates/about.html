@@ -6,9 +6,41 @@
 
 {% block content %}
     <div class="container-fluid">
-        <p>I'll finish this later, just putting this here so I remember to write about this website.</p>
-        <a class="fs-3" href="https://github.com/Tsunderarislime/artist-index">GitHub Repository</a>
-        <hr>
+        <h3>What is this?</h3>
+        <p>
+            It's a personal project for a web application that hosts a database of artists I follow on various social media platforms. It uses 
+            <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://flask.palletsprojects.com/en/stable/">Flask</a> 
+            for the web application framework and
+            <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://sqlite.org/">SQLite</a>
+            as the database engine. I have been hosting an instance of this web application using 
+            <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://railway.com/">Railway.</a>
+            You are likely reading this text from that exact instance.
+        </p>
+    </div>
+    <div class="container-fluid">
+        <h3>Why did you make this?</h3>
+        <p>
+            The main platform I use to follow artists is Twitter,
+            but due to policies regarding training AI models and unwarranted edits with uploaded works, artists have been making accounts on other platforms.
+            Artists usually do link their other socials on their Twitter profile, but there are cases where their other links are either not linked at all or
+            are nested within another website that contains links to their other socials. <br> <br>
+            I made this web application so that I compile a list of the socials of the artists I follow, all into a single website that I can access anytime.
+            It's kinda like an address book stored in the cloud, but I get full control over the functionality in the backend and the user interface in the frontend.
+        </p>
+    </div>
+    <div class="container-fluid">
+        <h3>Where is user registration?</h3>
+        <p>
+            The user functionality is not designed to be available to the public in this web application. It's designed to act as a way for me and trusted users to run
+            administrative tasks without having to SSH onto the server. The only way to register users right now is to SSH onto the server and manually add a new
+            user with SQLAlchemy. There are no plans to open user registration to the public.
+        </p>
+    </div>
+    <div class="container-fluid">
+        <a class="fs-3 link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://github.com/Tsunderarislime/artist-index">GitHub Repository</a>
+    </div>
+    <hr>
+    <div class="container-fluid">
         <a class="btn btn-secondary" id="content-toggle" href="#">Hide Content</a>
     </div>
 {% endblock %}

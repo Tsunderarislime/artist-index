@@ -4,7 +4,8 @@ from urllib.parse import urlsplit
 import sqlalchemy as sa
 from app import app, db
 from app.models import User, Artist
-from app.forms import LoginForm, ArtistForm, DeleteForm
+from app.forms import LoginForm, ArtistForm, DeleteForm, ChangePasswordForm, FetchButtonForm
+from app.profile_images import fetch_profile_images
 
 @app.route('/robots.txt')
 def robots():
@@ -65,7 +66,7 @@ def add():
             else:
                 flash(f"Failed to add social media link: \"{link['social_media']}\" ({link['link']}).", 'warning')
 
-        if successes > 0:
+        if successes:
             flash(f"Successfully added {form.name.data} ({form.searchable_name.data}) to the database.", 'success')
             artist = Artist(name=form.name.data.strip(), searchable_name=form.searchable_name.data.strip(), public=form.public.data, social_media_links=links)
             db.session.add(artist)
@@ -95,11 +96,41 @@ def artist(name):
         
         if success:
             flash(f'Successfully deleted {name} from the database.', 'success')
+            db.session.delete(artist)
+            db.session.commit()
+
             return redirect(url_for('index'))
         else:
-            return render_template('artist.html', artist=artist, form=form, hide_modal='ThisEvaluatesToTrueInJavaScript')
+            return render_template('artist.html', title=name, artist=artist, form=form, hide_modal='ThisEvaluatesToTrueInJavaScript')
 
-    return render_template('artist.html', artist=artist, form=form, hide_modal='')
+    return render_template('artist.html', title=name, artist=artist, form=form, hide_modal='')
+
+@app.route('/controlpanel', methods=['GET', 'POST'])
+@login_required
+def controlpanel():
+    change_password_form = ChangePasswordForm()
+    fetch_button_form = FetchButtonForm()
+
+    if change_password_form.change_password_submit.data and change_password_form.validate_on_submit():
+        user = db.session.scalar(
+            sa.select(User).where(User.username == current_user.username))
+        
+        if not user.check_password(change_password_form.current_password.data):
+            change_password_form.current_password.errors.append("Incorrect password")
+        elif len(change_password_form.new_password.data) < 8:
+            change_password_form.new_password.errors.append("Password too short. It should be at least 8 characters long.")
+        else:
+            flash('Successfully updated your password.', 'success')
+            user.set_password(change_password_form.new_password.data)
+            db.session.commit()
+    
+    if fetch_button_form.fetch_button_submit.data and fetch_button_form.validate_on_submit():
+        if fetch_profile_images():
+            flash('Successfully fetched profile images', 'success')
+        else:
+            flash('Failed to fetch profile images.', 'danger')
+
+    return render_template('controlpanel.html', title='Control Panel', change_password_form=change_password_form, fetch_button_form=fetch_button_form)
 
 @app.route('/about')
 def about():

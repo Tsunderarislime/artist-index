@@ -1,6 +1,5 @@
 """
-This version of profile_images.py is for servers that support cron jobs.
-Free tier deployments of Railway projects must be serverless, so I added a copy of profile_images.py and hundred.txt in the app folder.
+This version of profile_images.py is designed to be run manually through a function call in the control panel.
 """
 
 import os
@@ -80,6 +79,3 @@ def fetch_profile_images():
             app.logger.error(e)
     
     return success
-
-if __name__ == "__main__":
-    fetch_profile_images()

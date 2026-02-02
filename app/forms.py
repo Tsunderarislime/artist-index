@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, FieldList, FormField
-from wtforms.validators import DataRequired, ValidationError, EqualTo
+from wtforms.validators import DataRequired, ValidationError
 import sqlalchemy as sa
 from app import db
 from app.models import Artist
@@ -40,3 +40,14 @@ class DeleteForm(FlaskForm):
     name = StringField('Name')
     double_check = BooleanField('Double Check')
     submit = SubmitField('Delete')
+
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField('Current Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    change_password_submit = SubmitField('Change Password')
+
+class FetchButtonForm(FlaskForm):
+    class Meta:
+        csrf = False
+    
+    fetch_button_submit = SubmitField('Fetch')
