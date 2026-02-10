@@ -85,6 +85,8 @@ def add():
                 artist = Artist(name=form.name.data.strip(), searchable_name=form.searchable_name.data.strip(), public=form.public.data, social_media_links=links)
                 db.session.add(artist)
                 db.session.commit()
+
+                return redirect(url_for('index'))
             else:
                 flash(f"Failed to add {form.name.data} ({form.searchable_name.data}) to the database.", 'danger')
 
