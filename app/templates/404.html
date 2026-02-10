@@ -5,5 +5,11 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container-fluid">
+        <p>
+            The page you are trying to access does not exist. You can use the button below to return to the index.
+        </p>
+        <img class="img img-fluid d-block mx-auto" src="{{ url_for('static', filename='missing_profile_picture.gif') }}">
+    </div>
     <a class="btn btn-primary" href="{{ url_for('index') }}">Back to Index</a>
 {% endblock %}

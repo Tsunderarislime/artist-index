@@ -16,6 +16,7 @@ body {
 .background-image {
     position: absolute;
     z-index: -1;
+    max-width: 100%;
 }
 
 #main-container {
@@ -43,6 +44,20 @@ body {
 
 .dt-input {
     margin: 5px;
+}
+
+.tooltip-custom {
+    --bs-tooltip-border-radius: var(--bs-border-radius-xl);
+    --bs-tooltip-opacity: 1;
+    --bs-tooltip-padding-x: 6px;
+    --bs-tooltip-padding-y: 6px;
+    --bs-tooltip-bg: rgba(0, 0, 0, 0.8); 
+    backdrop-filter: blur(2px);
+}
+
+.tooltip-img {
+    width: 100px;
+    height: 100px;
 }
 
 /* "artist.html" styling */

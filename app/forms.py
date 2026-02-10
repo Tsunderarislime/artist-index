@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
 class SocialForm(FlaskForm):
     class Meta:
         csrf = False
-    
+
     social_media = StringField('Social Media')
     link = StringField('Link')
 
@@ -25,18 +25,10 @@ class ArtistForm(FlaskForm):
     public = BooleanField('Public')
     submit = SubmitField('Submit')
 
-    def validate_name(self, name):
-        artist = db.session.scalar(sa.select(Artist).where(
-            Artist.name == name.data
-        ))
-
-        if artist is not None:
-            raise ValidationError('Artist already exists in database.')
-
 class DeleteForm(FlaskForm):
     class Meta:
         csrf = False
-    
+
     name = StringField('Name')
     double_check = BooleanField('Double Check')
     submit = SubmitField('Delete')
@@ -49,5 +41,5 @@ class ChangePasswordForm(FlaskForm):
 class FetchButtonForm(FlaskForm):
     class Meta:
         csrf = False
-    
+
     fetch_button_submit = SubmitField('Fetch')

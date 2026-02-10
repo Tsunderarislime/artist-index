@@ -1,3 +1,7 @@
+// The script here is used in multiple pages with tooltips
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
 // The script here is used in "index.html" 
 function formatData(d) {
     let header = '<div class="slider" style="display: none;">' +

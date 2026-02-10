@@ -18,7 +18,7 @@ def fetch_profile_images():
         )
 
         # Handle which slice of 100 artists to read (0-99), (100-199), (200-299) by saving 0, 1, 2 to a file such that it loops like 0, 1, 2, 0, 1, 2, ...
-        # Necessary since the X API limits number of queried usernames to 100 per query and only allows one query every 24 hours
+        # Necessary since the Twitter API limits the number of queried usernames to 100 per query and only allows one query every 24 hours
         with open(hundred_file, 'r+') as f:
             current_slice = int(f.readline())
             next_slice = (current_slice + 1) % max(total_rows // 100, 1)
@@ -39,6 +39,7 @@ def fetch_profile_images():
 
         for artist in artists:
             if 'Twitter' in artist.social_media_links:
+                # Twitter links are formatted like: https://twitter.com/username, so index on -1 to get the username
                 profile_images[artist.id] = artist.social_media_links['Twitter'].split('/')[-1]
 
         bearer_token = os.environ.get('BEARER_TOKEN')
@@ -73,9 +74,10 @@ def fetch_profile_images():
                 db.session.commit()
                 success = True
             else:
-                print("Failed to get a response from the Twitter endpoint. Skipping profile image updates.")
+                app.logger.info("Failed to get a response from the Twitter endpoint. Skipping profile image updates.")
 
         except Exception as e:
             app.logger.error(e)
     
+    # Success flag determines what message to flash in the control panel
     return success

@@ -27,8 +27,17 @@
                 {% for artist in artists %}
                     <tr>
                         <th scope="row" class="dt-control outer-hoverlay">
-                            <a href="{{ url_for('artist', name=artist.name) }}" 
-                                class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover do-not-scroll">{{ artist.name }}</a>
+                            {% if artist.twitter_profile_image_url %}
+                                <a href="{{ url_for('artist', name=artist.name) }}" 
+                                class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover do-not-scroll"
+                                data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-custom"
+                                data-bs-title="<img class='tooltip-img rounded-3' src='{{ artist.twitter_profile_image_url }}'></a>">{{ artist.name }}</a>
+                            {% else %}
+                                <a href="{{ url_for('artist', name=artist.name) }}" 
+                                class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover do-not-scroll"
+                                data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-custom"
+                                data-bs-title="<img class='tooltip-img rounded-3' src='{{ url_for('static', filename='missing_profile_picture.gif') }}'></a>">{{ artist.name }}</a>
+                            {% endif %}
                         </th>
                         <td>{{ artist.searchable_name }}</td>
                         <td>{{ json_dumps(artist.social_media_links) }}</td>

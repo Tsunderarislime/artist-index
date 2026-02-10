@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <h1 class="mt-2">Control Panel</h1>
+    <h1 class="mt-2">{{ title }}</h1>
 {% endblock %}
 
 {% block content %}
     <div class="container-fluid p-1 mb-2">
         <h3>Change Password</h3>
-        <p>The new password should be at least <u>8 characters</u> long.</p>
         <div class="container-fluid">
             <form action="" method="post" novalidate>
                 {{ change_password_form.hidden_tag() }}
@@ -27,7 +26,12 @@
                     <div class="col-5">
                         <p>
                             {{ change_password_form.new_password.label(class="form-label fs-5") }}<br>
-                            {{ change_password_form.new_password(class="form-control") }}
+                            {{ change_password_form.new_password(class="form-control", **{
+                                'data-bs-toggle':"tooltip", 
+                                'data-bs-html': "true",
+                                'data-bs-title':"<p>The new password should be at least <u>8 characters</u> long.</p>", 
+                                'data-bs-custom-class':"tooltip-custom"
+                            }) }}
                             {% for error in change_password_form.new_password.errors %}
                                 <div class="alert alert-danger mt-1">[{{ error }}]</div>
                             {% endfor %}
@@ -47,7 +51,7 @@
     <hr>
     <div class="container-fluid p-1 mb-2">
         <h3>Fetch Profile Pictures</h3>
-        <p>Fetch profile pictures for artists who have a Twitter profile in the database. This can be done <u>once every 24 hours</u> due to strict rate limits.</p>
+        <p>Fetch profile pictures for artists who have a Twitter profile in the database. This can be done <u>once every 24 hours</u> due to strict rate limits with the Twitter API.</p>
         <div class="container-fluid">
             <form action="" method="post" novalidate>
                 {{ fetch_button_form.hidden_tag() }}
