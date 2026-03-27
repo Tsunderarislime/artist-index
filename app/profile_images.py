@@ -4,7 +4,7 @@ This version of profile_images.py is designed to be run manually through a funct
 
 import os
 import sqlalchemy as sa
-from app.models import Artist
+from app.models import Artist, Config
 from app import app, db
 from xdk import Client
 
@@ -19,14 +19,26 @@ def fetch_profile_images():
 
         # Handle which slice of 100 artists to read (0-99), (100-199), (200-299) by saving 0, 1, 2 to a file such that it loops like 0, 1, 2, 0, 1, 2, ...
         # Necessary since the Twitter API limits the number of queried usernames to 100 per query and only allows one query every 24 hours
-        with open(hundred_file, 'r+') as f:
-            current_slice = int(f.readline())
-            next_slice = (current_slice + 1) % max(total_rows // 100, 1)
-            
-            f.seek(0)
-            f.write(str(next_slice))
-            f.truncate()
-            f.close()
+        hundred = db.session.scalar(
+            sa.select(Config).where(Config.config == "hundred"))
+        
+        if not hundred:
+            new_config = Config(config="hundred", value="0")
+            db.session.add(new_config)
+            db.session.commit()
+
+            hundred = db.session.scalar(
+                sa.select(Config).where(Config.config == "hundred"))
+
+        current_slice = int(hundred.value)
+        next_slice = str((current_slice + 1) % max(total_rows // 100, 1))
+
+        db.session.execute(
+            sa.Update(Config).where(Config.config == "hundred").values(
+                value = next_slice
+            )
+        )
+        db.session.commit()
         
         start = 100 * current_slice
         end = start + 100

@@ -37,3 +37,12 @@ class Artist(db.Model):
 
     def __repr__(self):
         return f'<Artist {self.name}, with ID {self.id},\nsearchable_name {self.searchable_name},\n Twitter PFP URL: {self.twitter_profile_image_url}>'
+
+class Config(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    config: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
+                                            unique=True)
+    value: so.Mapped[str] = so.mapped_column(sa.String(256))
+
+    def __repr__(self):
+        return f'<Config {self.config}, with ID {self.id},\nvalue {self.value}>'
