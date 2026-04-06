@@ -4,8 +4,7 @@ from urllib.parse import urlsplit
 import sqlalchemy as sa
 from app import app, db
 from app.models import User, Artist
-from app.forms import LoginForm, ArtistForm, DeleteForm, ChangePasswordForm, FetchButtonForm
-from app.profile_images import fetch_profile_images
+from app.forms import LoginForm, ArtistForm, DeleteForm, ChangePasswordForm
 
 @app.route('/robots.txt')
 def robots():
@@ -172,7 +171,6 @@ def edit(name):
 @login_required
 def controlpanel():
     change_password_form = ChangePasswordForm()
-    fetch_button_form = FetchButtonForm()
 
     if change_password_form.change_password_submit.data and change_password_form.validate_on_submit():
         user = db.session.scalar(
@@ -186,14 +184,8 @@ def controlpanel():
             flash('Successfully updated your password.', 'success')
             user.set_password(change_password_form.new_password.data)
             db.session.commit()
-    
-    if fetch_button_form.fetch_button_submit.data and fetch_button_form.validate_on_submit():
-        if fetch_profile_images():
-            flash('Successfully fetched profile images', 'success')
-        else:
-            flash('Failed to fetch profile images.', 'danger')
 
-    return render_template('controlpanel.html', title='Control Panel', change_password_form=change_password_form, fetch_button_form=fetch_button_form)
+    return render_template('controlpanel.html', title='Control Panel', change_password_form=change_password_form)
 
 @app.route('/about')
 def about():

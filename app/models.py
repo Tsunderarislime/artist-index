@@ -33,10 +33,8 @@ class Artist(db.Model):
 
     public: so.Mapped[bool] = so.mapped_column(sa.Boolean)
 
-    twitter_profile_image_url: so.Mapped[str] = so.mapped_column(sa.String(256), default="")
-
     def __repr__(self):
-        return f'<Artist {self.name}, with ID {self.id},\nsearchable_name {self.searchable_name},\n Twitter PFP URL: {self.twitter_profile_image_url}>'
+        return f'<Artist {self.name}, with ID {self.id},\nsearchable_name {self.searchable_name}>'
 
 class Config(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)

@@ -48,19 +48,4 @@
             </form>
         </div>
     </div>
-    <hr>
-    <div class="container-fluid p-1 mb-2">
-        <h3>Fetch Profile Pictures</h3>
-        <p>Fetch profile pictures for artists who have a Twitter profile in the database. This can be done <u>once every 24 hours</u> due to strict rate limits with the Twitter API.</p>
-        <div class="container-fluid">
-            <form action="" method="post" novalidate>
-                {{ fetch_button_form.hidden_tag() }}
-                <div class="row form-group">
-                    <div class="col-5">
-                        {{ fetch_button_form.fetch_button_submit(class="btn btn-primary mt-1") }}
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 {% endblock %}
