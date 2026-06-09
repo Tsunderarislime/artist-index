@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">{{ title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h3>Version 1.1</h3>
+        <ul>
+            <li>Added a changelog page, just so I can keep track of all the progress I have made on this project.</li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <h3>Version 1.0</h3>
+        <p>
+            This is the first major version of the Artist Index with all of the basic, main functionality of the index working.
+        </p>
+        <ul>
+            <li>Established the structure of artist database and the types of data to store in the database. SQLite was used as the database engine as traffic was not
+                expected to be heavy.
+            </li>
+            <li>Built the frontend using HTML, CSS, and JavaScript. Bootstrap CSS was used for styling the pages and automatically handling desktop/mobile clients.</li>
+            <li>Drew and animated the characters in the background.</li>
+            <li>Built the backend using Python and Flask. This was chosen due to being more familiar with Python.</li>
+            <li>Got the main index page to display the artist database in a table. Used the DataTables JS library for functionality like searching and sorting.</li>
+            <li>Added a user login system. No user registration was implemented on purpose, as logged-in users would be capable of modifying the database.</li>
+            <li>Added functionality for users to add, edit, and remove artists from the database.</li>
+            <li>Added a detailed view for artists which displays additional data. Logged-in users can additionally see hidden data that is not publicly available.</li>
+            <li>Added a control panel for users. The idea behind the control panel is to have a place that has all the administrative controls all in one page.</li>
+            <li>Added a password change form for users in the control panel. New passwords also need to be at least 8 characters long.</li>
+            <li>Added an "about" page, which has a link to the GitHub repository and a button to hide the interface.</li>
+        </ul>
+    </div>
+{% endblock %}

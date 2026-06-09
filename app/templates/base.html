@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='logo.webp') }}" width="36" height="36">
-                <b>Artist Index</b>
+                <b>Artist Index</b> 
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-dark" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-dark" href="{{ url_for('changelog') }}">Changelog</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
