@@ -33,14 +33,21 @@ class Artist(db.Model):
 
     public: so.Mapped[bool] = so.mapped_column(sa.Boolean)
 
+    art: so.WriteOnlyMapped['Art'] = so.relationship(back_populates='artist', cascade="all, delete-orphan", passive_deletes=True)
+
     def __repr__(self):
         return f'<Artist {self.name}, with ID {self.id},\nsearchable_name {self.searchable_name}>'
 
-class Config(db.Model):
+class Art(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    config: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                            unique=True)
-    value: so.Mapped[str] = so.mapped_column(sa.String(256))
+
+    source: so.Mapped[str] = so.mapped_column(sa.String(256))
+    link: so.Mapped[str] = so.mapped_column(sa.String(256))
+    local: so.Mapped[bool] = so.mapped_column(sa.Boolean)
+
+    artist_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Artist.id, ondelete="cascade"), index=True)
+
+    artist: so.Mapped[Artist] = so.relationship(back_populates='art')
 
     def __repr__(self):
-        return f'<Config {self.config}, with ID {self.id},\nvalue {self.value}>'
+        return f'<Art with ID {self.id},\nsource {self.source},\nlink {self.link},\nlocal {self.local}>'

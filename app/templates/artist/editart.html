@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">Edit Art for {{ artist.name }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container overflow-y-scroll rounded" id="edit-art-container"></div>
+        {% if art %}
+            <form action="" method="post" novalidate>
+                {{ form.csrf_token }}
+                {{ form.hidden_tag() }}
+
+                {% for a, a_form in zip(art, form.art.entries) %}
+                    <div class="container mb-3">
+                        {% if a.local %}
+                            <img src="{{ url_for('serve_upload', filename=a.link) }}" class="edit-art-img mb-2">
+                            <p class="form-label">{{ a_form.link.label }}</p>
+                            {{ a_form.link(class="form-control mb-2", readonly=True, style="opacity: 0.5;", **{
+                                'data-bs-toggle':"tooltip", 
+                                'data-bs-title':"This is a local upload, and cannot be changed.", 
+                                'data-bs-custom-class':"tooltip-custom"
+                            }) }}
+                        {% else %}
+                            <img src="{{ a.link }}" class="edit-art-img mb-2">
+                            <p class="form-label">{{ a_form.link.label }}</p>
+                            {{ a_form.link(class="form-control mb-2", **{
+                                'data-bs-toggle':"tooltip", 
+                                'data-bs-title':"Provide a direct link to an image from somewhere on the internet.", 
+                                'data-bs-custom-class':"tooltip-custom"
+                            }) }}
+                        {% endif %}
+
+                        <p class="form-label">{{ a_form.source.label }}</p>
+                        {{ a_form.source(class="form-control mb-2", **{
+                            'data-bs-toggle':"tooltip", 
+                            'data-bs-title':"Provide a source for the image. (Twitter, Pixiv, etc.)", 
+                            'data-bs-custom-class':"tooltip-custom"
+                        }) }}
+                        <p class="form-label">{{ a_form.delete.label }}</p>
+                        {{ a_form.delete(class="form-check-input mb-2", **{
+                            'data-bs-toggle':"tooltip", 
+                            'data-bs-title':"Mark this artwork for deletion.", 
+                            'data-bs-custom-class':"tooltip-custom"
+                        }) }}
+                    </div>
+                    <hr>
+                {% endfor %}
+                {{ form.submit(class="btn btn-success mb-2", **{
+                    'data-bs-toggle':"tooltip", 
+                    'data-bs-title':"Save changes and return to artist page.", 
+                    'data-bs-custom-class':"tooltip-custom"
+                }) }}
+            </form>
+        {% else %}
+            <p>No art to display for this artist.</p>
+        {% endif %}
+        <a class="btn btn-secondary mb-2" href="{{ url_for('artist.artist', name=artist.name) }}">Go Back</a>
+    </div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}

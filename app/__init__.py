@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from json import dumps
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -19,5 +20,11 @@ def json_dumps(dict):
     return dumps(dict)
 
 app.jinja_env.globals.update(json_dumps=json_dumps)
+
+try:
+    upload_directory = app.config['UPLOAD_DIRECTORY']
+    os.makedirs(upload_directory, exist_ok=True)
+except Exception as e:
+    app.logger.exception(e)
 
 from app import routes, models

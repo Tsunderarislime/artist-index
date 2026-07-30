@@ -5,7 +5,32 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div class="container-fluid mb-3">
+        <h3>Version 2.0</h3>
+        <h5>
+            The second major version of the Artist Index is here. As this is a database of artists, I felt that it made sense to add a way to showcase some of
+            their art.
+        </h5>
+        <ul>
+            <li>Added a new table in the database for storing art data. This can either be a direct file upload or a direct image link from an image hosting service like
+                Imgur or Reddit. The artist table has been updated accordingly.
+            </li>
+            <li>Added a new config variable so that the file upload destination folder can be changed. An empty folder will also be initialized on startup.</li>
+            <li>Implemented file upload functionality. File uploads are renamed to a SHAKE-256 hash of that file for a unique filename.</li>
+            <li>Added an art carousel on the artist info page. This can be controlled by clicking on the buttons or swiping left/right if on a mobile device. 
+                Clicking on the image will take the user directly to the image's source.
+            </li>
+            <li>Implemented add/edit/remove functionality for the art tables. Art is added on the artist info page, while editing/deletion is done through a new page.</li>
+            <li>Added a new page for editing/deleting art in the database. Edits to the direct links and source links can be made here, though direct image uploads 
+                can only have their source links modified. Deletion can be done in bulk by marking any art that is set for deletion.</li>
+            <li>Ensured that deleting an artist from the database also deletes all associated art from the database. This will also delete all image uploads for that
+                respective artist.</li>
+            <li>Renamed some HTML templates in the 'artist' category to be more clearly distinguishable.</li>
+            <li>Added a config editor in the control panel. This is used to change the web application's config variables within itself.</li>
+            <li>Added a maintenance mode. During maintenance, access to the Artist Index is restricted for everyone except for administrators.</li>
+        </ul>
+    </div>
+    <div class="container-fluid mb-3">
         <h3>Version 1.2</h3>
         <ul>
             <li>Massively overhauled the project's overall structure. As I plan to add more features, it made sense to get everything organized before the 
@@ -16,7 +41,7 @@
             <li>Added a newline at the end of every document that didn't already have one.</li>
         </ul>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid mb-3">
         <h3>Version 1.1</h3>
         <ul>
             <li>Added a changelog page, just so I can keep track of all the progress I have made on this project.</li>
@@ -24,9 +49,9 @@
     </div>
     <div class="container-fluid">
         <h3>Version 1.0</h3>
-        <p>
+        <h5>
             This is the first major version of the Artist Index with all of the basic, main functionality of the index working.
-        </p>
+        </h5>
         <ul>
             <li>Established the structure of artist database and the types of data to store in the database. SQLite was used as the database engine as traffic was not
                 expected to be heavy.

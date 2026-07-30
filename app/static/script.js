@@ -21,7 +21,7 @@ function formatData(d) {
         '</div>';
 }
 
-let table = new DataTable('#the-index', {
+let indexTable = new DataTable('#the-index', {
     // 0 = name, 1 = searchable_name, 2 = social_media_links
     order: [[0, 'asc']],
     columnDefs: [
@@ -34,9 +34,9 @@ let table = new DataTable('#the-index', {
     lengthMenu: [10, 20, 40]
 });
 
-table.on('click', 'tbody th.dt-control', function (e) {
+indexTable.on('click', 'tbody th.dt-control', function (e) {
     let tr = e.target.closest('tr');
-    let row = table.row(tr);
+    let row = indexTable.row(tr);
 
     // 'do-not-scroll' class prevents table from sliding when clicking the link as an admin.
     if (!(e.target.classList.contains('do-not-scroll'))) {
@@ -99,8 +99,14 @@ document.addEventListener('DOMContentLoaded', function () {
 window.onload = () => {
     try {
         const deleteModal = new bootstrap.Modal('#delete-modal');
+        const artUploadModal = new bootstrap.Modal('#art-upload-modal');
+        const x = new bootstrap.Carousel('#art-carousel');
+
         if (document.getElementById('delete-modal').getAttribute('title')) {
             deleteModal.show();
+        };
+        if (document.getElementById('art-upload-modal').getAttribute('title')) {
+            artUploadModal.show();
         };
     } catch(error) {
         // This error happens when not viewing the artist details page, fine to ignore

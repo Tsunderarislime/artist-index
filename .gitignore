@@ -210,3 +210,4 @@ __marimo__/
 .flaskenv
 app.db
 migrations/
+upload/

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FieldList, FormField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FieldList, FormField, FileField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -8,7 +8,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-class SocialForm(FlaskForm):
+class SocialField(FlaskForm):
     class Meta:
         csrf = False
 
@@ -18,9 +18,27 @@ class SocialForm(FlaskForm):
 class ArtistForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     searchable_name = StringField('Searchable Name')
-    social_media_links = FieldList(FormField(SocialForm), min_entries=1)
+    social_media_links = FieldList(FormField(SocialField), min_entries=1)
     public = BooleanField('Public')
     submit = SubmitField('Submit')
+
+class ArtUploadForm(FlaskForm):
+    file = FileField('File')
+    link = StringField('Link')
+    source = StringField('Source')
+    art_upload_submit = SubmitField('Upload')
+
+class ArtEditField(FlaskForm):
+    class Meta:
+        csrf = False
+
+    link = StringField('Link')
+    source = StringField('Source')
+    delete = BooleanField('Delete')
+
+class ArtEditForm(FlaskForm):
+    art = FieldList(FormField(ArtEditField))
+    submit = SubmitField('Save changes')
 
 class DeleteForm(FlaskForm):
     class Meta:
@@ -34,3 +52,8 @@ class ChangePasswordForm(FlaskForm):
     current_password = PasswordField('Current Password', validators=[DataRequired()])
     new_password = PasswordField('New Password', validators=[DataRequired()])
     change_password_submit = SubmitField('Change Password')
+
+class ConfigForm(FlaskForm):
+    config = StringField('Config', validators=[DataRequired()])
+    value = StringField('Value')
+    submit = SubmitField('Set Config')

@@ -1,9 +1,9 @@
-from flask import render_template, flash, Blueprint
+from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 import sqlalchemy as sa
-from app import db
+from app import app, db
 from app.models import User
-from app.forms import ChangePasswordForm
+from app.forms import ChangePasswordForm, ConfigForm
 
 admin_blueprint = Blueprint('admin', __name__)
 
@@ -26,3 +26,43 @@ def controlpanel():
             db.session.commit()
 
     return render_template('admin/controlpanel.html', title='Control Panel', change_password_form=change_password_form)
+
+@admin_blueprint.route('/controlpanel/config', methods=['GET', 'POST'])
+@login_required
+def config():
+    config_form = ConfigForm()
+    config_names = ['MAINTENANCE']
+    values = [app.config[n] for n in config_names]
+
+    if config_form.submit.data and config_form.validate_on_submit():
+        name = config_form.config.data.strip()
+        value = config_form.value.data.strip()
+        success = True
+
+        if name not in config_names:
+            config_form.config.errors.append("This config variable does not exist.")
+            success = False
+        else:
+            try:
+                if isinstance(app.config[name], bool):
+                    updated = bool(value)
+                    app.config[name] = updated
+                elif isinstance(app.config[name], int):
+                    updated = int(value)
+                    app.config[name] = int(value)
+                elif isinstance(app.config[name], float):
+                    updated = float(value)
+                    app.config[name] = float(value)
+                else:
+                    updated = value
+                    app.config[name] = value
+            except Exception as e:
+                config_form.value.errors.append(f"The value you entered was not the correct data type. Expected ({type(app.config[name]).__name__}).")
+                success = False
+
+        if success:
+            flash(f'Successfully update the config variable {name} to {updated}', 'success')
+            return redirect(url_for('admin.config'))
+            
+
+    return render_template('admin/config.html', title='Config', config=config_names, values=values, config_form=config_form, zip=zip)
