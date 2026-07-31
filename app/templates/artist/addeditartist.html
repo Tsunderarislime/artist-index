@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-4 mb-2">
                     {{ form.name.label(class="form-label fs-5") }}<br>
-                    {{ form.name(class="form-control", **{
+                    {{ form.name(class="form-control", maxlength="64", **{
                         'data-bs-toggle':"tooltip", 
                         'data-bs-title':"This should be the main handle this artist goes by.", 
                         'data-bs-custom-class':"tooltip-custom"
@@ -23,7 +23,7 @@
                     {% endfor %}
                     <br>
                     {{ form.searchable_name.label(class="form-label mt-3 fs-5") }}<br>
-                    {{ form.searchable_name(class="form-control mb-3", **{
+                    {{ form.searchable_name(class="form-control mb-3", maxlength="256", **{
                         'data-bs-toggle':"tooltip", 
                         'data-bs-title':"Multiple names should be separated by commas.", 
                         'data-bs-custom-class':"tooltip-custom"

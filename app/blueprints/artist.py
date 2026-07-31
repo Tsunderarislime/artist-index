@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, Blueprint
+from flask import render_template, flash, redirect, url_for, abort, Blueprint
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import app, db
@@ -101,6 +101,9 @@ def artist(name):
     ).all()
     delete_form = DeleteForm()
     art_upload_form = ArtUploadForm()
+
+    if not current_user.is_authenticated and not artist.public:
+        abort(404)
 
     # This prevents anonymous users from deleting an artist even if they somehow gain access to the deletion form
     if current_user.is_authenticated and delete_form.submit.data and delete_form.validate_on_submit():

@@ -27,4 +27,4 @@ try:
 except Exception as e:
     app.logger.exception(e)
 
-from app import routes, models
+from app import routes, models, load_config

@@ -26,8 +26,7 @@ class User(UserMixin, db.Model):
 
 class Artist(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                            unique=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     searchable_name: so.Mapped[str] = so.mapped_column(sa.String(256))
     social_media_links: so.Mapped[sa.JSON] = so.mapped_column(sa.JSON)
 
@@ -51,3 +50,13 @@ class Art(db.Model):
 
     def __repr__(self):
         return f'<Art with ID {self.id},\nsource {self.source},\nlink {self.link},\nlocal {self.local}>'
+
+class Configuration(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+    value: so.Mapped[str] = so.mapped_column(sa.String(256))
+
+    d_type: so.Mapped[str] = so.mapped_column(sa.String(16), default='STRING')
+
+    def __repr__(self):
+        return f'<Configuration {self.id}, Name: {self.name}, Value: {self.value}>'

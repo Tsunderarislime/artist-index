@@ -6,6 +6,19 @@
 
 {% block content %}
     <div class="container-fluid mb-3">
+        <h3>Version 2.1</h3>
+        <ul>
+            <li>Added a new table for storing configuration variables. This fixed an issue with the recent maintenance mode where it would exit maintenance when the server
+                woke up from sleep. As the free tier for Railway uses a serverless configuration, this was an issue that occurred when the web application was inactive.
+            </li>
+            <li>Added a new script for loading in configuration variables from the configuration table.</li>
+            <li>Fixed an issue where private entries in the database could still be viewed if someone knew the exact name to enter in the address bar. Now it will redirect
+                to a 404 page, maintaining the privacy of these artists.
+            </li>
+            <li>Added character length limits to text forms to match the length limits of the strings in the tables.</li>
+        </ul>
+    </div>
+    <div class="container-fluid mb-3">
         <h3>Version 2.0</h3>
         <h5>
             The second major version of the Artist Index is here. As this is a database of artists, I felt that it made sense to add a way to showcase some of

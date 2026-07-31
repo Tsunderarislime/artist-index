@@ -2,7 +2,7 @@ from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import app, db
-from app.models import User
+from app.models import User, Configuration
 from app.forms import ChangePasswordForm, ConfigForm
 
 admin_blueprint = Blueprint('admin', __name__)
@@ -30,9 +30,13 @@ def controlpanel():
 @admin_blueprint.route('/controlpanel/config', methods=['GET', 'POST'])
 @login_required
 def config():
+    config = db.session.scalars(
+        sa.select(Configuration)
+    ).all()
+    config_names = [c.name for c in config]
+    values = [c.value for c in config]
+    d_types = [c.d_type for c in config]
     config_form = ConfigForm()
-    config_names = ['MAINTENANCE']
-    values = [app.config[n] for n in config_names]
 
     if config_form.submit.data and config_form.validate_on_submit():
         name = config_form.config.data.strip()
@@ -61,8 +65,12 @@ def config():
                 success = False
 
         if success:
-            flash(f'Successfully update the config variable {name} to {updated}', 'success')
+            flash(f'Successfully updated the config variable {name} to {updated}', 'success')
+            db.session.execute(
+                sa.update(Configuration).where(Configuration.name == name).values(value=value)
+            )
+            db.session.commit()
+
             return redirect(url_for('admin.config'))
             
-
-    return render_template('admin/config.html', title='Config', config=config_names, values=values, config_form=config_form, zip=zip)
+    return render_template('admin/config.html', title='Config', config=config_names, values=values, d_types=d_types, config_form=config_form, zip=zip)

@@ -12,7 +12,7 @@
                 <div class="col-5">
                     <p>
                         {{ form.username.label(class="form-label fs-5") }}<br>
-                        {{ form.username(class="form-control") }}
+                        {{ form.username(class="form-control", maxlength="64") }}
                         {% for error in form.username.errors %}
                             <div class="alert alert-danger mt-1">[{{ error }}]</div>
                         {% endfor %}

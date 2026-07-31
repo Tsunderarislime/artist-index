@@ -120,7 +120,7 @@
                         <div class="modal-body">
                             <div class="mb-2">
                                 <p class="form-label">Type {{ artist.name }} to confirm:</p>
-                                {{ delete_form.name(class="form-control") }}
+                                {{ delete_form.name(class="form-control", maxlength="64") }}
                                 {% for error in delete_form.name.errors %}
                                     <div class="alert alert-danger mt-1">[{{ error }}]</div>
                                 {% endfor %}
@@ -165,7 +165,7 @@
                             </div>
                             <div class="mb-2">
                                 <p class="form-label">{{ art_upload_form.link.label }}</p>
-                                {{ art_upload_form.link(class="form-control", **{
+                                {{ art_upload_form.link(class="form-control", maxlength="256", **{
                                     'data-bs-toggle':"tooltip", 
                                     'data-bs-title':"Provide a direct link to an image from somewhere on the internet.", 
                                     'data-bs-custom-class':"tooltip-custom"
@@ -176,7 +176,7 @@
                             </div>
                             <div class="mb-2">
                                 <p class="form-label">{{ art_upload_form.source.label }}</p>
-                                {{ art_upload_form.source(class="form-control", **{
+                                {{ art_upload_form.source(class="form-control", maxlength="256", **{
                                     'data-bs-toggle':"tooltip", 
                                     'data-bs-title':"Provide a source for the image. (Twitter, Pixiv, etc.)", 
                                     'data-bs-custom-class':"tooltip-custom"

@@ -24,7 +24,7 @@
                         {% else %}
                             <img src="{{ a.link }}" class="edit-art-img mb-2">
                             <p class="form-label">{{ a_form.link.label }}</p>
-                            {{ a_form.link(class="form-control mb-2", **{
+                            {{ a_form.link(class="form-control mb-2", maxlength="256", **{
                                 'data-bs-toggle':"tooltip", 
                                 'data-bs-title':"Provide a direct link to an image from somewhere on the internet.", 
                                 'data-bs-custom-class':"tooltip-custom"
@@ -32,7 +32,7 @@
                         {% endif %}
 
                         <p class="form-label">{{ a_form.source.label }}</p>
-                        {{ a_form.source(class="form-control mb-2", **{
+                        {{ a_form.source(class="form-control mb-2", maxlength="256", **{
                             'data-bs-toggle':"tooltip", 
                             'data-bs-title':"Provide a source for the image. (Twitter, Pixiv, etc.)", 
                             'data-bs-custom-class':"tooltip-custom"
