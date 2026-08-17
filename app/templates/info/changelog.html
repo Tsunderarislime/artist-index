@@ -6,7 +6,19 @@
 
 {% block content %}
     <div class="container-fluid mb-3">
-        <h3>Version 2.1</h3>
+        <h3>Version 2.1.1</h3>
+        <ul>
+            <li>Reformatted changelog version tracking to use three numbers instead of two, as some updates (like this one) are not big enough to warrant an X.1 version. 
+                I still want to track important things like bug fixes, so I added the third number for small updates like an X.Y.1 version.
+            </li>
+            <li>Fixed an issue where file uploads were still (easily) accessible if someone somehow got the filename. Viewing file uploads should now be restricted to 
+                the artist view page for non-authenticated users. Authenticated users can still view file uploads outside the artist view page. 
+            </li>
+            <li>Updated maintenance mode to properly return a 503 HTML status code.</li>
+        </ul>
+    </div>
+    <div class="container-fluid mb-3">
+        <h3>Version 2.1.0</h3>
         <ul>
             <li>Added a new table for storing configuration variables. This fixed an issue with the recent maintenance mode where it would exit maintenance when the server
                 woke up from sleep. As the free tier for Railway uses a serverless configuration, this was an issue that occurred when the web application was inactive.
@@ -19,7 +31,7 @@
         </ul>
     </div>
     <div class="container-fluid mb-3">
-        <h3>Version 2.0</h3>
+        <h3>Version 2.0.0</h3>
         <h5>
             The second major version of the Artist Index is here. As this is a database of artists, I felt that it made sense to add a way to showcase some of
             their art.
@@ -44,7 +56,7 @@
         </ul>
     </div>
     <div class="container-fluid mb-3">
-        <h3>Version 1.2</h3>
+        <h3>Version 1.1.0</h3>
         <ul>
             <li>Massively overhauled the project's overall structure. As I plan to add more features, it made sense to get everything organized before the 
                 project got too big and messy to track efficiently.
@@ -55,13 +67,13 @@
         </ul>
     </div>
     <div class="container-fluid mb-3">
-        <h3>Version 1.1</h3>
+        <h3>Version 1.0.1</h3>
         <ul>
             <li>Added a changelog page, just so I can keep track of all the progress I have made on this project.</li>
         </ul>
     </div>
     <div class="container-fluid">
-        <h3>Version 1.0</h3>
+        <h3>Version 1.0.0</h3>
         <h5>
             This is the first major version of the Artist Index with all of the basic, main functionality of the index working.
         </h5>

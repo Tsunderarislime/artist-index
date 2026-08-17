@@ -1,6 +1,6 @@
 from app import app
 import app.blueprints as bp
-from flask import send_from_directory, render_template, request
+from flask import send_from_directory, render_template, request, abort
 from flask_login import current_user
 
 app.register_blueprint(bp.index.index_blueprint)
@@ -12,6 +12,13 @@ app.register_blueprint(bp.errors.errors_blueprint)
 
 @app.route('/upload/<filename>')
 def serve_upload(filename):
+    referrer = request.referrer
+    artist_url = request.host_url + 'artist'
+
+    if not referrer or not referrer.startswith(artist_url):
+        if not current_user.is_authenticated:
+            abort(403)
+
     return send_from_directory(app.config['UPLOAD_DIRECTORY'], filename)
 
 @app.before_request
@@ -25,4 +32,4 @@ def is_maintenance():
     if current_user.is_authenticated:
         return
 
-    return render_template('maintenance.html')
+    return abort(503)

@@ -3,6 +3,10 @@ from app import db
 
 errors_blueprint = Blueprint('error', __name__)
 
+@errors_blueprint.app_errorhandler(403)
+def forbidden_error(error):
+    return render_template('errors/403.html'), 403
+
 @errors_blueprint.app_errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
@@ -11,3 +15,7 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('errors/500.html'), 500
+
+@errors_blueprint.app_errorhandler(503)
+def service_unavailable_error(error):
+    return render_template('errors/503.html'), 503
