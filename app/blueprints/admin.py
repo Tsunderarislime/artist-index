@@ -85,7 +85,7 @@ def storage():
             filepath = os.path.join(path, f)
             total_bytes += os.path.getsize(filepath)
     total_mb = round(total_bytes / 1024**2, 1)
-    maximum = app.config['MAX_UPLOAD_MB']
+    maximum = int(app.config['MAX_UPLOAD_MB'])
     progress = round(total_mb / maximum, 3) * 100
 
     if progress < 50:
