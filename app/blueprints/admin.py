@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from app import app, db
 from app.models import User, Configuration
 from app.forms import ChangePasswordForm, ConfigForm
+import os
 
 admin_blueprint = Blueprint('admin', __name__)
 
@@ -74,3 +75,24 @@ def config():
             return redirect(url_for('admin.config'))
             
     return render_template('admin/config.html', title='Config', config=config_names, values=values, d_types=d_types, config_form=config_form, zip=zip)
+
+@admin_blueprint.route('/controlpanel/storage')
+@login_required
+def storage():
+    total_bytes = 0
+    for path, dir, files in os.walk(app.config['UPLOAD_DIRECTORY']):
+        for f in files:
+            filepath = os.path.join(path, f)
+            total_bytes += os.path.getsize(filepath)
+    total_mb = round(total_bytes / 1024**2, 1)
+    maximum = app.config['MAX_UPLOAD_MB']
+    progress = round(total_mb / maximum, 3) * 100
+
+    if progress < 50:
+        colour = 'bg-primary'
+    elif progress < 90:
+        colour = 'bg-warning'
+    else:
+        colour = 'bg-danger'
+
+    return render_template('admin/storage.html', title='Storage', current=total_mb, maximum=maximum, progress=progress, colour=colour)

@@ -6,13 +6,32 @@
 
 {% block content %}
     <div class="container-fluid mb-3">
+        <h3>Version 2.2.0</h3>
+        <ul>
+            <li>Added a new image gallery feature. I want to provide an easier way to for visitors to discover artists they might like, so having a way to easily 
+                browse through all the artwork in the database made sense. This did add a new JavaScript library to the web application, though I made sure to 
+                restrict the import to just the image gallery.
+            </li>
+            <li>
+                Added a storage page for the control panel. Currently, it only displays the disk usage of file uploads. I may potentially add more to 
+                this in the future, maybe a simple file explorer? It really depends on how bad disk usage gets.
+            </li>
+            <li>Adjusted images in artist view page to no longer use rounded corners. The parent container now prevents images from overflowing beyond the 
+                rounded corners of the container.
+            </li>
+            <li>Fixed some styling inconsistencies between some of the pages.</li>
+            <li>Increased the minimum width of the main content container to 80%. This change mainly affects the desktop viewing experience. Previously, the main content would 
+                only take up roughly 65% of the viewport width, which was fine until I added the image gallery. It made sense to increase the minimum width 
+                of the main content for a better viewing experience overall, but it's particularly beneficial for the new image gallery.
+            </li>
+            <li>Removed 'Add Artist' and 'Control Panel' from anonymous user view. There wasn't really any point to show these links to them, so I may as well remove them.</li>
+        </ul>
+    </div>
+    <div class="container-fluid mb-3">
         <h3>Version 2.1.1</h3>
         <ul>
             <li>Reformatted changelog version tracking to use three numbers instead of two, as some updates (like this one) are not big enough to warrant an X.1 version. 
                 I still want to track important things like bug fixes, so I added the third number for small updates like an X.Y.1 version.
-            </li>
-            <li>Fixed an issue where file uploads were still (easily) accessible if someone somehow got the filename. Viewing file uploads should now be restricted to 
-                the artist view page for non-authenticated users. Authenticated users can still view file uploads outside the artist view page. 
             </li>
             <li>Updated maintenance mode to properly return a 503 HTML status code.</li>
         </ul>

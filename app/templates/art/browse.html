@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">{{ title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <p>Click on a piece of artwork to view it within a lightbox modal. In this modal, you can see the artist who made the artwork and a link to the source. 
+            Click anywhere outside the modal content to close the modal.
+        </p>
+        <div class="container-fluid p-3 mt-2 overflow-y-scroll rounded" id="masonry-grid-container">
+            <div class="row g-2" id="masonry-grid" data-masonry='{"percentPosition": true, "itemSelector": ".grid-item" }'>
+                {% for a in art %}
+                    <div class="col-6 col-lg-4 grid-item">
+                        {% if a.local %}
+                            <img src="{{ url_for('serve_upload', filename=a.link) }}" class="card-img-top img-fluid" 
+                        {% else %}
+                            <img src="{{ a.link }}" class="card-img-top img-fluid" 
+                        {% endif %}
+                        data-art-source="{{ a.source }}" data-art-artist="{{ a.artist.name }}"
+                        data-bs-toggle="modal" data-bs-target="#browse-modal">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js" crossorigin="anonymous" sync></script>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="browse-modal" tabindex="-1" aria-labelledby="browse-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-transparent border-0 px-3 py-1">
+                <div class="modal-header">
+                    <h2><a href="#" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-artist"></a></h2>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <img src="" id="browse-modal-image" class="img-fluid object-fit-contain" />
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <a href="#" class="small link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-source"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

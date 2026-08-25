@@ -5,55 +5,57 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid p-1 mb-2">
+    <div class="container-fluid">
         <h3>Change Password</h3>
-        <div class="container-fluid">
-            <form action="" method="post" novalidate>
-                {{ change_password_form.hidden_tag() }}
-                <div class="row mt-2">
-                    <div class="col-5">
-                        <p>
-                            {{ change_password_form.current_password.label(class="form-label fs-5") }}<br>
-                            {{ change_password_form.current_password(class="form-control") }}
-                            {% for error in change_password_form.current_password.errors %}
-                                <div class="alert alert-danger mt-1">[{{ error }}]</div>
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div class="col-5"></div>
+        <form action="" method="post" novalidate>
+            {{ change_password_form.hidden_tag() }}
+            <div class="row mt-2">
+                <div class="col-5">
+                    <p>
+                        {{ change_password_form.current_password.label(class="form-label fs-5") }}<br>
+                        {{ change_password_form.current_password(class="form-control") }}
+                        {% for error in change_password_form.current_password.errors %}
+                            <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </p>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-5">
-                        <p>
-                            {{ change_password_form.new_password.label(class="form-label fs-5") }}<br>
-                            {{ change_password_form.new_password(class="form-control", **{
-                                'data-bs-toggle':"tooltip", 
-                                'data-bs-html': "true",
-                                'data-bs-title':"<p>The new password should be at least <u>8 characters</u> long.</p>", 
-                                'data-bs-custom-class':"tooltip-custom"
-                            }) }}
-                            {% for error in change_password_form.new_password.errors %}
-                                <div class="alert alert-danger mt-1">[{{ error }}]</div>
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div class="col-5"></div>
+                <div class="col-5"></div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-5">
+                    <p>
+                        {{ change_password_form.new_password.label(class="form-label fs-5") }}<br>
+                        {{ change_password_form.new_password(class="form-control", **{
+                            'data-bs-toggle':"tooltip", 
+                            'data-bs-html': "true",
+                            'data-bs-title':"<p>The new password should be at least <u>8 characters</u> long.</p>", 
+                            'data-bs-custom-class':"tooltip-custom"
+                        }) }}
+                        {% for error in change_password_form.new_password.errors %}
+                            <div class="alert alert-danger mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </p>
                 </div>
-                
-                <div class="row form-group">
-                    <div class="col-5">
-                        {{ change_password_form.change_password_submit(class="btn btn-primary mt-3") }}
-                    </div>
+                <div class="col-5"></div>
+            </div>
+            
+            <div class="row form-group">
+                <div class="col-5">
+                    {{ change_password_form.change_password_submit(class="btn btn-primary mt-3") }}
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
     <hr>
-    <div class="container-fluid p-1 mb-2">
+    <div class="container-fluid">
         <h3>View Config</h3>
-        <div class="container-fluid">
-            <p>The config contains variables that affect the behaviour of the web application.</p>
-            <a class="btn btn-primary mb-2" href="{{ url_for('admin.config') }}">Go to Config</a>
-        </div>
+        <p>The config contains variables that affect the behaviour of the web application.</p>
+        <a class="btn btn-primary mb-2" href="{{ url_for('admin.config') }}">Go to Config</a>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <h3>View Storage</h3>
+        <p>View storage usage of all files that have been uploaded to the server.</p>
+        <a class="btn btn-primary mb-2" href="{{ url_for('admin.storage') }}">Go to Storage</a>
     </div>
 {% endblock %}

@@ -13,12 +13,9 @@ def index():
         artists = db.session.scalars(
             sa.select(Artist)
         ).all()
-
-        return render_template('index/index.html', title='Home', artists=artists)
     else:
         artists = db.session.scalars(
             sa.select(Artist).where(Artist.public == True)
         ).all()
 
-        return render_template('index/index.html', title='Home', artists=artists)
-    
+    return render_template('index/index.html', title='Home', artists=artists)

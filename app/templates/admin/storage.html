@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">{{ title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <style>
+        @keyframes fillProgress {to {width: {{ progress }}%;} }
+        .progress-bar { animation: fillProgress 2s ease-in-out forwards; }
+    </style>
+    <div class="container-fluid">
+        <h3>Disk Usage</h3>
+        <div class="progress" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="height: 40px;">
+            {% if progress < 5 %}
+                <div class="progress-bar progress-bar-striped {{ colour }}" style="width: 0%;"></div>
+                <p class="fs-4 position-absolute text-dark start-50 translate-middle-x">{{ progress }}%</p>
+            {% else %}
+                <div class="progress-bar progress-bar-striped {{ colour }}" style="width: 0%;"><p class="mb-1 fs-4">{{ progress }}%</p></div>
+            {% endif %}
+        </div>
+        <p class="fs-5">{{ current }} / {{ maximum }} MB</p>
+        <a class="btn btn-secondary my-2" href="{{ url_for('admin.controlpanel') }}">Back to Control Panel</a>
+    </div>
+{% endblock %}
