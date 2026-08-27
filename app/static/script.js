@@ -1,3 +1,15 @@
+// The script here is used in all pages with the button that returns you to the top of the page
+const topButton = document.getElementById("top-button");
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        $('#top-button').fadeIn(200);
+    } else {
+        $('#top-button').fadeOut(200);
+    }
+}
+
 // The script here is used in multiple pages with tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -128,10 +140,12 @@ try {
         const imageSource = clickedImage.getAttribute('data-art-source')
         
         const modalImageTarget = document.getElementById('browse-modal-image');
+        const modalImageGlowTarget = document.getElementById('browse-modal-image-glow');
         const modalArtistTarget = document.getElementById('browse-modal-artist');
         const modalSourceTarget = document.getElementById('browse-modal-source');
         
         modalImageTarget.src = imageLink;
+        modalImageGlowTarget.src = imageLink;
         modalArtistTarget.href = "artist/" + imageArtist;
         modalArtistTarget.textContent = imageArtist;
         modalSourceTarget.href = imageSource;
@@ -144,6 +158,10 @@ try {
         .then(() => {
             var msnry = new Masonry('#masonry-grid');
             msnry.layout();
+            $('#loader-container').hide();
+            $('#masonry-grid').animate({
+                opacity: 1
+            }, 1000);
     });
 } catch(error) {
     {};

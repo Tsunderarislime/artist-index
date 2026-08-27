@@ -10,7 +10,10 @@
             Click anywhere outside the modal content to close the modal.
         </p>
         <div class="container-fluid p-3 mt-2 overflow-y-scroll rounded" id="masonry-grid-container">
-            <div class="row g-2" id="masonry-grid" data-masonry='{"percentPosition": true, "itemSelector": ".grid-item" }'>
+            <div id="loader-container" class="position-absolute start-50 translate-middle">
+                <div class="loader"></div>
+            </div>
+            <div class="row g-2" id="masonry-grid" data-masonry='{"percentPosition": true, "itemSelector": ".grid-item" }' style="opacity: 0;">
                 {% for a in art %}
                     <div class="col-6 col-lg-4 grid-item">
                         {% if a.local %}
@@ -31,12 +34,15 @@
 {% block modal %}
     <div class="modal fade" id="browse-modal" tabindex="-1" aria-labelledby="browse-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content bg-transparent border-0 px-3 py-1">
+            <div class="modal-content bg-transparent border-0 px-4 py-2 rounded-4">
                 <div class="modal-header">
                     <h2><a href="#" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-artist"></a></h2>
                 </div>
                 <div class="modal-body d-flex justify-content-center">
-                    <img src="" id="browse-modal-image" class="img-fluid object-fit-contain" />
+                    <div class="position-relative d-inline-block m-4">
+                        <img src="" id="browse-modal-image" class="img-fluid object-fit-contain" />
+                        <img src="" id="browse-modal-image-glow" class="img-fluid object-fit-contain" />
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <a href="#" class="small link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-source"></a>

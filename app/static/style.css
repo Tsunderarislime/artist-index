@@ -28,6 +28,18 @@ body {
     backdrop-filter: blur(5px);
 }
 
+#top-button {
+    width: 80px;
+    height: 80px;
+    right: 0.5%;
+    bottom: 5%;
+    display: none;
+}
+
+#top-button img {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.75));
+}
+
 /* "index.html" styling */
 #index-container {
     max-height: 80vh;
@@ -129,6 +141,7 @@ body {
 
 /* "browse.html" styling */
 #masonry-grid-container {
+    min-height: 300px;
     max-height: 100vh;
     box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.15);
 }
@@ -137,15 +150,54 @@ body {
     cursor: pointer;
 }
 
+#loader-container {
+    top: 50%;
+}
+
+/* Spinning loader #13 from https://css-loaders.com/spinner/ */
+.loader {
+    width: 100px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: 
+        radial-gradient(farthest-side,#add8e6 100%,#0000) top/12px 12px no-repeat,
+        conic-gradient(#0000 50%,#add8e6);
+    mask: radial-gradient(farthest-side,#0000 calc(100% - 12px),#000 0);
+    animation: l13 1s infinite linear;
+    }
+    @keyframes l13{ 
+    100%{transform: rotate(1turn)}
+}
+
 #browse-modal.show {
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 #browse-modal .modal-content {
-    box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, 1);
-    backdrop-filter: blur(4px) brightness(50%);
+    box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px) brightness(60%);
 }
 
 #browse-modal-image {
-    max-height: 80vh;
+    max-height: 85vh;
+}
+
+#browse-modal-image-glow {
+    max-height: 85vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: blur(20px) saturate(1.5) opacity(0.8);
+    transform: scale(1.04);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Expanding width of XL modal on desktop browsers, since the default width isn't enough for me */
+@media (min-width: 1200px) {
+    .modal-xl {
+        --bs-modal-width: 85%;
+        max-width: 85%;
+    }
 }

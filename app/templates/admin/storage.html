@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    <!-- This style block has to be here to use the 'progress' variable passed into Jinja -->
     <style>
         @keyframes fillProgress {to {width: {{ progress | round(1) }}%;} }
         .progress-bar { animation: fillProgress 2s ease-in-out forwards; }
