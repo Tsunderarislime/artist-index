@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">Forbidden</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <p>
+            You do not have permission to view this. You can use the button below to return to the index.
+        </p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('index.index') }}">Back to Index</a>
+{% endblock %}
