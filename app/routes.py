@@ -14,9 +14,8 @@ app.register_blueprint(bp.errors.errors_blueprint)
 @app.route('/upload/<filename>')
 def serve_upload(filename):
     referrer = request.referrer
-    if not referrer or not referrer.startswith(request.host_url):
+    if not referrer or not referrer.startswith(app.config['ALLOWED_REFERRER_URL']):
         if not current_user.is_authenticated:
-            flash(f'Anonymous access from {referrer} is denied.', 'danger')
             abort(403)
 
     return send_from_directory(app.config['UPLOAD_DIRECTORY'], filename)

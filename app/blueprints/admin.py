@@ -40,7 +40,7 @@ def config():
     config_form = ConfigForm()
 
     if config_form.submit.data and config_form.validate_on_submit():
-        name = config_form.config.data.strip()
+        name = config_form.config.data.strip().upper()
         value = config_form.value.data.strip()
         success = True
 
