@@ -26,7 +26,7 @@
                         {% else %}
                             <div class="carousel-item">
                         {% endif %}
-                                <a href="{{ a.source }}" class="carousel-item-inner">
+                                <a href="{{ a.source }}" target="_blank" rel="noopener noreferrer" class="carousel-item-inner">
                                     {% if a.local %}
                                         <img src="{{ url_for('serve_upload', filename=a.link) }}">
                                     {% else %}
@@ -57,7 +57,7 @@
     {% if not current_user.is_anonymous %}
         <div class="container-fluid row p-2">
             <div class="col-8">
-                <a class="btn btn-primary mb-2 me-2" href="#" data-bs-toggle="modal" data-bs-target="#art-upload-modal">Add Art</a>
+                <button type="button" class="btn btn-primary mb-2 me-2" data-bs-toggle="modal" data-bs-target="#art-upload-modal">Add Art</button>
                 <a class="btn btn-primary mb-2" href="{{ url_for('artist.editart', name=artist.name) }}">Edit Art</a>
             </div>
             <div class="col-4"></div>
@@ -70,7 +70,7 @@
             {% for social_media, link in artist.social_media_links.items() %}
                 <tr>
                     <th scope="row" style="width: 20%;">{{ social_media }}</th>
-                    <td style="width: auto;"><a href="{{ link }}">{{ link }}</a></td>
+                    <td style="width: auto;"><a href="{{ link }}" target="_blank" rel="noopener noreferrer">{{ link }}</a></td>
                 </tr>
             {% endfor %}
         </table>
@@ -99,7 +99,7 @@
         <div class="container-fluid row p-2">
             <div class="col-8">
                 <a class="btn btn-primary mb-2 me-2" href="{{ url_for('artist.edit', name=artist.name) }}">Edit artist</a>
-                <a class="btn btn-danger mb-2" href="#" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete artist</a>
+                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete artist</button>
             </div>
             <div class="col-4"></div>
         </div>
@@ -195,4 +195,8 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='scripts/artist.js') }}"></script>
 {% endblock %}

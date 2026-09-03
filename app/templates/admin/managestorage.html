@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="mt-2">{{ title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if art %}
+            <p>Click on an image to select that image. A green row on the 'Artist' row indicates a public artist. A red row indicates a private artist.</p>
+            <div class="table-responsive card rounded-3 p-0 mb-3">
+                <table id="storage-table" class="table table-bordered rounded-3 overflow-hidden p-0 m-0" style="table-layout: fixed;">
+                    <tr>
+                        <th id="col-image-preview">Image Preview</th>
+                        <th id="col-information">Information</th>
+                    </tr>
+                    {% for a, s in zip(art, sizes) %}
+                        <tr>
+                            <td>
+                                <input class="image-checkbox" type="checkbox" autocomplete="off" data-art-id="{{ a.id }}">
+                                <img src="{{ url_for('serve_upload', filename=a.link) }}" class="img-fluid" style="min-width: 50px;" onclick="checkbox(this)"/>
+                            </td>
+                            <td>
+                                <div class="table-responsive">
+                                    <table class="table m-0 w-100">
+                                        {% if a.artist.public %}
+                                            <tr class="table-success">
+                                        {% else %}
+                                            <tr class="table-danger">
+                                        {% endif %}
+                                            <td style="width: 33%;">Artist</td>
+                                            <td>{{ a.artist.name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bg-transparent border-bottom border-secondary" style="width: 33%;">Filename</td>
+                                            <td class="bg-transparent border-bottom border-secondary">{{ a.link }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bg-transparent border-bottom border-secondary" style="width: 33%;">Size</td>
+                                            <td class="bg-transparent border-bottom border-secondary">{{ s | round(1) }}KB</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bg-transparent border-bottom-0" style="width: 33%;">Source</td>
+                                            <td class="bg-transparent border-bottom-0">
+                                                <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                                href="{{ a.source }}" target="_blank" rel="noopener noreferrer">{{ a.source }}</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div id="selected-images">
+                <p id="selected-counter"></p>
+                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#manage-storage-modal" onclick="loadIDs()">Delete Art</button>
+            </div>
+        {% else %}
+            <p>There are no image uploads on the server.</p>
+        {% endif %}
+        <a class="btn btn-secondary mb-2" href="{{ url_for('admin.storage') }}">Back to Storage</a>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="manage-storage-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="manage-storage-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-2 rounded-4">
+                <div class="modal-header">
+                    <h2>Delete Selected Images?</h2>
+                </div>
+                <form action="" method="post" novalidate>
+                    {{ ms_form.csrf_token }}
+                    {{ ms_form.hidden_tag() }}
+                    <div class="modal-body">
+                        <p><b>This will permanently delete all of the selected images from the server.</b> The database will also remove these entries accordingly.</p>
+                        <div class="mb-2">
+                            {{ ms_form.ids(class="d-none") }}
+                        </div>
+                        <div class="mb-2">
+                            <p class="form-label">Check this box to confirm this action:</p>
+                            {{ ms_form.double_check(class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                        {{ ms_form.submit(class="btn btn-danger") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='scripts/managestorage.js') }}"></script>
+{% endblock %}

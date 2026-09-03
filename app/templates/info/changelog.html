@@ -6,6 +6,24 @@
 
 {% block content %}
     <div class="container-fluid mb-3">
+        <h3>Version 2.4.0</h3>
+        <ul>
+            <li>Added a simple file explorer in the control panel. It lets an admin view information about all uploads on the server. You can bulk delete files 
+                from the server and it will update the artwork database accordingly.
+            </li>
+            <li>Added <b>noopener</b> and <b>noreferrer</b> tags to each link to an external website.</li>
+            <li>Changed all external links to open in a new tab, rather than open in the current tab.</li>
+            <li>Updated DataTables scripts and styling from 2.3.7 to 3.0.3.</li>
+            <li>Reorganized JavaScript files to be modular, rather than having all functions placed in one file. Now, 'script.js' only contains JavaScript code 
+                for components that exist on multiple pages. Pages that need specific JavaScript functionality will use their own separate JavaScript files.
+            </li>
+            <li>Changed all buttons that don't link to another page to be <b>button</b> elements. This doesn't change any functionality other than 
+                removing the '#' from the URL on click. This was mainly to make all of the buttons consistent. Buttons that don't link anywhere are <b>button</b> 
+                elements, while buttons that link somewhere else are link <b>(a)</b> elements.</li>
+            <li>Removed unused empty modal block in 'editart.html'.</li>
+        </ul>
+    </div>
+    <div class="container-fluid mb-3">
         <h3>Version 2.3.2</h3>
         <ul>
             <li>Fixed the 'Remember Me' check box stacking vertically on mobile web browsers.</li>

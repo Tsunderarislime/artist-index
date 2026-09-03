@@ -28,7 +28,6 @@
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js" crossorigin="anonymous" sync></script>
 {% endblock %}
 
 {% block modal %}
@@ -45,9 +44,15 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <a href="#" class="small link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-source"></a>
+                    <a href="#" class="small link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="browse-modal-source"
+                    target="_blank" rel="noopener noreferrer"></a>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js" crossorigin="anonymous" sync></script>
+    <script src="{{ url_for('static', filename='scripts/browse.js') }}"></script>
 {% endblock %}

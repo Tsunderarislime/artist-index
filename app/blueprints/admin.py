@@ -2,8 +2,8 @@ from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import app, db
-from app.models import User, Configuration
-from app.forms import ChangePasswordForm, ConfigForm
+from app.models import User, Configuration, Art
+from app.forms import ChangePasswordForm, ConfigForm, ManageStorageForm
 import os
 
 admin_blueprint = Blueprint('admin', __name__)
@@ -96,3 +96,54 @@ def storage():
         colour = 'bg-danger'
 
     return render_template('admin/storage.html', title='Storage', current=total_mb, maximum=maximum, progress=progress, colour=colour)
+
+@admin_blueprint.route('/controlpanel/storage/manage', methods=['GET', 'POST'])
+@login_required
+def managestorage():
+    ms_form = ManageStorageForm()
+    art = db.session.scalars(
+        sa.select(Art).where(Art.local == True)
+    ).all()
+    sizes = []
+
+    for a in art:
+        sizes.append(os.path.getsize(os.path.join(app.config['UPLOAD_DIRECTORY'], a.link)) / 1024)
+
+    if current_user.is_authenticated and ms_form.submit.data and ms_form.validate_on_submit():
+        if not ms_form.double_check.data:
+            flash('To delete the images, please check the box to confirm the action. You will also need to re-select all the images you intend to delete.', 'danger')
+        else:
+            target_ids = [int(i) for i in ms_form.ids.data.split(',')]
+            deletion_count = len(target_ids)
+            total_size_deleted = 0
+            if deletion_count:
+                for id in target_ids:
+                    target_art = db.session.get(Art, id)
+                    try:
+                        total_size_deleted += os.path.getsize(os.path.join(app.config['UPLOAD_DIRECTORY'], target_art.link)) / 1024
+                        os.remove(os.path.join(app.config['UPLOAD_DIRECTORY'], target_art.link))
+                    except OSError:
+                        pass
+
+                db.session.execute(
+                    sa.delete(Art).where(Art.id.in_(target_ids))
+                )
+                db.session.commit()
+
+                flash(f'Deleted {deletion_count} artwork(s) from the database.', 'success')
+                flash(f'A total of {total_size_deleted:.1f}KB of data has been deleted.', 'info')
+
+                # Reload the art and sizes for the redirect
+                art = db.session.scalars(
+                    sa.select(Art).where(Art.local == True)
+                ).all()
+                sizes = []
+
+                for a in art:
+                    sizes.append(os.path.getsize(os.path.join(app.config['UPLOAD_DIRECTORY'], a.link)) / 1024)
+            else:
+                flash('No artworks were deleted from the database.', 'warning')
+
+        redirect(url_for('admin.managestorage'))
+
+    return render_template('admin/managestorage.html', title='Manage Storage', art=art, sizes=sizes, zip=zip, ms_form=ms_form)

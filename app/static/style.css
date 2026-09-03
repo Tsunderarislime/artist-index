@@ -201,3 +201,30 @@ body {
         max-width: 85%;
     }
 }
+
+/* "managestorage.html" styling */
+#storage-table img {
+    cursor: pointer;
+}
+
+#col-image-preview {
+    width: 25%;
+}
+
+#col-information {
+    width: auto;
+}
+
+@media (orientation: portrait) {
+    #col-image-preview {
+        width: 45%;
+    }
+}
+
+.image-checkbox {
+    display: none;
+}
+
+#selected-images {
+    display: none;
+}

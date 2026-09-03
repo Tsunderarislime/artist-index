@@ -57,3 +57,11 @@ class ConfigForm(FlaskForm):
     config = StringField('Config', validators=[DataRequired()])
     value = StringField('Value')
     submit = SubmitField('Set Config')
+
+class ManageStorageForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+    ids = StringField('IDs')
+    double_check = BooleanField('Double Check')
+    submit = SubmitField('Delete')

@@ -21,6 +21,7 @@
             {% endif %}
         </div>
         <p class="fs-5">{{ current }} / {{ maximum }} MB</p>
-        <a class="btn btn-secondary my-2" href="{{ url_for('admin.controlpanel') }}">Back to Control Panel</a>
+        <a class="btn btn-primary mb-2 me-2" href="{{ url_for('admin.managestorage') }}">Manage Storage</a>
+        <a class="btn btn-secondary mb-2" href="{{ url_for('admin.controlpanel') }}">Back to Control Panel</a>
     </div>
 {% endblock %}

@@ -64,6 +64,10 @@
     </div>
     <hr>
     <div class="container-fluid">
-        <a class="btn btn-secondary" id="content-toggle" href="#">Hide Content</a>
+        <button type="button" class="btn btn-secondary" id="content-toggle">Hide Content</button>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='scripts/about.js') }}"></script>
 {% endblock %}
