@@ -153,10 +153,26 @@ def artist(name):
             filename = secure_filename(file.filename)
 
             if filename != '':
+                # Need this to check if the upload would exceed the maximum available storage
+                file.seek(0, os.SEEK_END)
+                file_bytes = file.tell()
+                file.seek(0)
+                total_bytes = 0
+                for path, dir, files in os.walk(app.config['UPLOAD_DIRECTORY']):
+                    for f in files:
+                        filepath = os.path.join(path, f)
+                        total_bytes += os.path.getsize(filepath)
+                total_mb = round((total_bytes + file_bytes) / 1024**2, 1)
+                maximum_mb = int(app.config['MAX_UPLOAD_MB'])
+
                 file_ext = os.path.splitext(filename)[1]
                 if file_ext not in app.config['UPLOAD_EXTENSIONS']:
                     art_upload_form.file.errors.append("Please upload a JPG, PNG, GIF, or WEBP.")
                     success = False
+
+                elif total_mb > maximum_mb:
+                    art_upload_form.file.errors.append(f"The server does not have enough storage for this upload. {total_mb}MB after upload > {maximum_mb}MB limit.")
+                    success = False           
 
                 else:
                     saved_filename = os.path.join(app.config['UPLOAD_DIRECTORY'], filename)
